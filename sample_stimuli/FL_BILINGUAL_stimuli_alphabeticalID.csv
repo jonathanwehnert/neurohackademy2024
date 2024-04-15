@@ -1,0 +1,4 @@
+stimulus_id,stimulus_type,word_idx_action_rating,video_idx_action_rating,german_umlaut,german_noUmlaut,video_title_agostini,english,vimmi,video_title_noID,german_audio_noID,vimmi_audio_noID,english_audio_noID,...14,...15,...16,video_title,german_audio,vimmi_audio,english_audio
+1,passive_listening,12,15,anschnallen,anschnallen,fastening a security belt.mp4,to fasten one's seatbelt,nibesa,anschnallen.mp4,anschnallen.wav,nibesa.wav,tofastenoneseatbelt.wav,0,_,01_,01_anschnallen.mp4,01_anschnallen.wav,01_nibesa.wav,01_tofastenoneseatbelt.wav
+2,passive_listening,21,25,anstreichen,anstreichen,painting a wall.mp4,to paint,geloro,anstreichen.mp4,anstreichen.wav,geloro.wav,topaint.wav,0,_,02_,02_anstreichen.mp4,02_anstreichen.wav,02_geloro.wav,02_topaint.wav
+3,passive_listening,17,20,anzünden,anzuenden,lighting a match.mp4,to light,bekoni,anzuenden.mp4,anzuenden.wav,bekoni.wav,tolight.wav,0,_,03_,03_anzuenden.mp4,03_anzuenden.wav,03_bekoni.wav,03_tolight.wav

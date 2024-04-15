@@ -3,7 +3,7 @@ create_landmark_RDM.py
 script to create a RDM from the pose & hand landmark vectors as obtained
 for the gesture videos in the FL_BILINGUAL study.
 
-- takes pose landmark, left handmark, right handmark arrays (as created in separate script)
+- takes pose landmark, left handmark, right handmark arrays (as created in estimate_pose_hands.py)
 - combines them into one array (landmarks_3d) and makes each dimension of the coordinate system (x, y, z)
 its own value
 - creates channel names and timing vector (both hard-coded)

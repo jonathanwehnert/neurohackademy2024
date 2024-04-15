@@ -1,6 +1,9 @@
+"""
 # script to download pre-trained German-language fastText
 # model and then extract word-vectors for the 40 words used
 # in FL_BILINGUAL project
+#
+# WARNING!!! Will download fasttext models to cwd upon execution, ~11GB in size
 #
 # 1) extracts word-vectors based on full fasttext model (300 dimensions)
 # 2) calculates pairwise cosine dissimilarity of these vectors, saves to .npy
@@ -11,8 +14,9 @@
 # written by: Jonathan Wehnert
 
 
-# requires to be in conda activate fasttext OR conda activate fl_bilingual_RDM
+# requires to be in conda activate fasttext OR fl_bilingual_RDM OR RDM_prep
 # where fasttext is installed
+"""
 
 import fasttext.util
 import rsatoolbox.rdm
@@ -41,9 +45,10 @@ def extract_ft_vectors(ft_model, words):
 # get location of this script:
 script_path = os.path.abspath(__file__)
 script_dir = os.path.abspath(os.path.dirname(script_path))
+out_dir = script_dir
 
 # load list of words
-stimlist_relative = '../../../1_Organisation/Materials/Stimuli/L1_German/FL_BILINGUAL_stimuli_alphabeticalID.csv'
+stimlist_relative = '../sample_stimuli/FL_BILINGUAL_stimuli_alphabeticalID.csv'
 stimlist_path = os.path.normpath(os.path.join(script_dir, stimlist_relative))
 df = pd.read_csv(stimlist_path)
 # create pandas Series of the words and stimulus_ids
@@ -51,7 +56,7 @@ stimulus_id = df['stimulus_id']
 word = df['german_umlaut']
 # concatenate necessary information into one df
 word_vector_descriptors = pd.DataFrame({'stimulus_id': stimulus_id, 'word': word})
-word_vector_descriptors.to_csv('ft_word_vector_descriptors.csv', index=False)
+word_vector_descriptors.to_csv(os.path.join(out_dir, 'ft_word_vector_descriptors.csv'), index=False)
 
 # first, obtain fasttext vectors and cosine dissimilarity for full model (300 dimensions)
 # download German ('de') model to project folder and load as ft
@@ -60,7 +65,7 @@ ft = fasttext.load_model('cc.de.300.bin')
 
 # extract vectors for our words, full model
 ft_vectors_300 = extract_ft_vectors(ft, word)
-ft_vectors_300.to_csv('ft_word_vectors_300.csv', index=False)  # save as csv for use in R
+ft_vectors_300.to_csv(os.path.join(out_dir, 'ft_word_vectors_300.csv'), index=False)  # save as csv for use in R
 # transform into ndarray
 ft_vectors_300 = ft_vectors_300.to_numpy()
 
@@ -68,10 +73,11 @@ ft_vectors_300 = ft_vectors_300.to_numpy()
 # Calculate & save pairwise cosine dissimilarity
 ft_300_cosine_dissimilarities = 1 - cosine_similarity(ft_vectors_300)
 print(ft_300_cosine_dissimilarities)
-np.save('ft_300_cosine_dissimilarities.npy', ft_300_cosine_dissimilarities)
+np.save(os.path.join(out_dir, 'ft_300_cosine_dissimilarities.npy'), ft_300_cosine_dissimilarities)
 print(ft.get_dimension())
 
 
+### EVERYTHING BELOW - NOT - NEEDED, when all you want to do is create the RDM from the fasttext vectors
 ### compare correlation between full 300-dimensional-based dissimilarities and those based on fewer dimensions
 # ONLY IF compare_dimensionalities is set to True (manually at beginning of script!)
 if compare_dimensionalities:
@@ -125,24 +131,24 @@ if compare_dimensionalities:
     plt.xticks(dims[1::2])
     legend.set_title('comparison method:')
 
-    plt.savefig('ft_300-ft_xxx_correlation.png')
+    plt.savefig(os.path.join(out_dir, 'ft_300-ft_xxx_correlation.png'))
 
 
-###
-# reduce model dimensions to a specific, hardcoded level (target_dim), for later use with anticluster in R
-target_dim = [10, 35]
-for dims in target_dim:
-    ft = fasttext.load_model('cc.de.300.bin')
-    fasttext.util.reduce_model(ft, dims)
-    print(ft.get_dimension())
+    ### NOTE: The below is ultimately not being used, as anticluster was able to handle the full 300-dimensional dataset relatively well
+    # reduce model dimensions to a specific, hardcoded level (target_dim), for later use with anticluster in R
+    target_dim = [10, 35]
+    for dims in target_dim:
+        ft = fasttext.load_model('cc.de.300.bin')
+        fasttext.util.reduce_model(ft, dims)
+        print(ft.get_dimension())
 
-    # extract vectors for our words
-    ft_vectors_005 = extract_ft_vectors(ft, word)
-    ft_vectors_005.to_csv(f'ft_word_vectors_{dims:03}.csv', index=False)  # save as csv for use in R
+        # extract vectors for our words
+        ft_vectors_005 = extract_ft_vectors(ft, word)
+        ft_vectors_005.to_csv(os.path.join(out_dir, f'ft_word_vectors_{dims:03}.csv'), index=False)  # save as csv for use in R
 
-    # transform into ndarray
-    ft_vectors_005 = ft_vectors_005.to_numpy()
-    # Calculate & save pairwise cosine dissimilarity
-    ft_005_cosine_dissimilarities = 1 - cosine_similarity(ft_vectors_005)
-    print(ft_005_cosine_dissimilarities)
-    np.save(f'ft_{dims:03}_cosine_dissimilarities.npy', ft_005_cosine_dissimilarities)
+        # transform into ndarray
+        ft_vectors_005 = ft_vectors_005.to_numpy()
+        # Calculate & save pairwise cosine dissimilarity
+        ft_005_cosine_dissimilarities = 1 - cosine_similarity(ft_vectors_005)
+        print(ft_005_cosine_dissimilarities)
+        np.save(os.path.join(out_dir, f'ft_{dims:03}_cosine_dissimilarities.npy'), ft_005_cosine_dissimilarities)
