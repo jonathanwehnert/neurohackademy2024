@@ -1,0 +1,14 @@
+description of landmark creation process for videos in this folder
+both mediapipe_estimate_pose_hands Pose and Hand landmarks were created for each frame of each video and saved to 3 separate npy arrays (see below).
+additionally they were drawn onto the input videos and saved to this folder for visualization purposes only.
+in the visualizations, the finger landmarks were removed from the pose model (as they are included in greater detail in the hand model).
+they are nevertheless still included in pose_landmarks.npy
+
+
+landmark_inputs.csv contains a list (in order) of all videos put into mediapipe_estimate_pose_hands
+pose_landmarks.npy, lh_landmarks.npy, rh_landmarks.npy are all organised in the same fashion:
+(input_video, landmark, frame, landmark_position)
+input_video:     each row of each ndarray corresponds to each row in landmark_inputs.csv
+landmark:        each row corresponds to the 33 landmarks (pose) or 21 handmarks for the left (lh_landmarks) & right (rh_landmarks) hands
+frame:           progresses through all frames of video one-by-one, with frames exceeding the number of frames in the shortest video removed from all videos
+landmark_position: 3-dimensional array. x, y, z coordinates (in that order) of each landmark at each frame
