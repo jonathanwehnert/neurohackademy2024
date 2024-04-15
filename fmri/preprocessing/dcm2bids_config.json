@@ -1,0 +1,85 @@
+{
+  "descriptions": [
+    {
+      "datatype": "func",
+      "suffix": "bold",
+      "custom_entities": "task-german",
+      "criteria": {
+        "SeriesDescription": "cmrr_mbep2d_bold_2.5iso"
+      },
+      "sidecar_changes": {
+        "TaskName": "german",
+        "B0FieldSource": [
+          "magnitude1_fmap",
+          "magnitude2_fmap",
+          "phasediff_fmap",
+          "pepolar_fmap"
+        ]
+      }
+    },
+    {
+      "datatype": "func",
+      "suffix": "sbref",
+      "custom_entities": "task-german",
+      "criteria": {
+        "SeriesDescription": "cmrr_mbep2d_bold_2.5iso_SBRef"
+      },
+      "sidecar_changes": {
+        "TaskName": "german"
+      }
+    },
+    {
+      "datatype": "fmap",
+      "suffix": "magnitude1",
+      "criteria": {
+        "PulseSequenceName": "*fm2d2r",
+        "ImageType": ["ORIGINAL", "PRIMARY", "M", "NONE"],
+        "EchoNumber": 1
+      },
+      "sidecar_changes": {
+        "B0FieldIdentifier": "magnitude1_fmap"
+      }
+    },
+    {
+      "datatype": "fmap",
+      "suffix": "magnitude2",
+      "criteria": {
+        "PulseSequenceName": "*fm2d2r",
+        "ImageType": ["ORIGINAL", "PRIMARY", "M", "NONE"],
+        "EchoNumber": 2
+      },
+      "sidecar_changes": {
+        "B0FieldIdentifier": "magnitude2_fmap"
+      }
+    },
+    {
+      "datatype": "fmap",
+      "suffix": "phasediff",
+      "criteria": {
+        "PulseSequenceName": "*fm2d2r",
+        "ImageType": ["ORIGINAL", "PRIMARY", "P", "NONE", "PHASE"]
+      },
+      "sidecar_changes": {
+        "B0FieldIdentifier": "phasediff_fmap"
+      }
+    },
+    {
+      "datatype": "fmap",
+      "suffix": "epi",
+      "criteria": {
+         "PulseSequenceName": "epse2d1_82"
+      },
+      "sidecar_changes": {
+        "B0FieldIdentifier": "pepolar_fmap"
+      }
+    },
+    {
+      "datatype": "anat",
+      "suffix": "T1w",
+      "criteria": {
+        "SeriesDescription": "T1w*",
+        "NonlinearGradientCorrection": true
+      }
+    }
+  ]
+}

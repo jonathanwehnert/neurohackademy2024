@@ -3,7 +3,8 @@ FLB_1stlevel_GLM.m
 script to run LS-S style (Mumford et al., 2014) single-trial GLMs for each trial of a given fMRI session.
 
 Requirements:
-- fMRI data & events.tsv files in BIDS-conform directory and format
+- preprocessed fMRI data & events.tsv files in BIDS-conform directory and format
+    - I preprocess data via fmriprep. for a script of that, see the subdirectory 'preprocessing'
 - tested in MATLAB R2023b on Linux
 - needs SPM 12, Matlab's parallel toolbox, bids-matlab (https://github.com/bids-standard/bids-matlab)
 - needs helper scripts in directories 'matlab_helpers' & 'SPM_batches' (as is the case in this repo)
