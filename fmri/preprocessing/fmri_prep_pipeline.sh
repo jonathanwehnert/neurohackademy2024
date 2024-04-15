@@ -55,17 +55,3 @@ mkdir "SPM_LSS"
 # from here, move on to MATLAB and SPM for further preprocessing of univariate (smoothing, GLM) and multivariate (GLM, LSS) analyses
 # FLB_1stlevel_GLM.m smoothes the normalized func images and performs standard OLS as well as LSS GLM
 # for now, you'd need to run it twice: once set to OLS and smoothing; and separately set to LSS and no smoothing
-
-# alternatively, try PyMVPA BIDS
-# this is mostly throwing errors for now...
-docker run -i --rm \
-	-v $BIDS_dir:/bids_dataset:ro \
-	-v $BIDS_dir/derivatives/pymvpa:/outputs \
-	bids/pymvpa \
-	/bids_dataset /outputs participant_prep -p 01 -s 01 -t button --skip_bids_validator
-
-docker run -i --rm \
-	-v $BIDS_dir:/bids_dataset:ro \
-	-v $BIDS_dir/derivatives/pymvpa:/outputs \
-	bids/pymvpa \
-	/bids_dataset /outputs participant_test -p 01 -s 01 -t button -c button_1_correct button_2_correct button_3_correct button_4_correct --bzscore
