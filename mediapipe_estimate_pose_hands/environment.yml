@@ -2,21 +2,21 @@ name: mediapipe_estimate_pose_hands
 channels:
   - defaults
 dependencies:
-  - bzip2=1.0.8=h620ffc9_4
-  - ca-certificates=2023.12.12=hca03da5_0
-  - libffi=3.4.4=hca03da5_0
-  - ncurses=6.4=h313beb8_0
-  - openssl=3.0.12=h1a28f6b_0
-  - pip=23.3.1=py311hca03da5_0
-  - python=3.11.7=hb885b13_0
-  - readline=8.2=h1a28f6b_0
-  - setuptools=68.2.2=py311hca03da5_0
-  - sqlite=3.41.2=h80987f9_0
-  - tk=8.6.12=hb8d0fd4_0
-  - tzdata=2023d=h04d1e81_0
-  - wheel=0.41.2=py311hca03da5_0
-  - xz=5.4.5=h80987f9_0
-  - zlib=1.2.13=h5a0b063_0
+  - bzip2=1.0.8
+  - ca-certificates=2023.12.12
+  - libffi=3.4.4
+  - ncurses=6.4
+  - openssl=3.0.12
+  - pip=23.3.1
+  - python=3.11.7
+  - readline=8.2
+  - setuptools=68.2.2
+  - sqlite=3.41.2
+  - tk=8.6.12
+  - tzdata=2023d
+  - wheel=0.41.2
+  - xz=5.4.5
+  - zlib=1.2.13
   - pip:
       - absl-py==2.0.0
       - attrs==23.2.0
@@ -27,7 +27,7 @@ dependencies:
       - fonttools==4.47.2
       - kiwisolver==1.4.5
       - matplotlib==3.8.2
-      - mediapipe_estimate_pose_hands==0.10.9
+      - mediapipe==0.10.9
       - numpy==1.26.3
       - opencv-contrib-python==4.9.0.80
       - opencv-python==4.9.0.80

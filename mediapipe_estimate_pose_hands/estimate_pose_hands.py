@@ -1,3 +1,20 @@
+"""
+estimate_pose_hands.py
+script to obtain pose & hand landmark vectors from video via Google's MediaPipe
+
+- takes path with videos as input (mediapipe_indir)
+- performs the following for each *.mp4 file in given directory:
+    - apply pose model
+    - apply left & right hand models
+    - remove vectors irrelevant to current study (mainly the not-shown legs)
+    - save npy array of each model over time (i.e. frames)
+    - save video with vectors overlaid to mediapipe_outdir
+
+required conda environment: mediapipe_estimate_pose_hands (on MacBook)
+current version: 2024-03
+written by: Jonathan Wehnert
+"""
+
 import copy
 import os
 import cv2
@@ -15,11 +32,11 @@ import csv
 script_path = os.path.abspath(__file__)
 script_dir = os.path.abspath(os.path.dirname(script_path))
 # path to audio files directory, relative to this script's location
-relative_path = '../../../1_Organisation/Materials/Stimuli/gestures'
+relative_path = '../sample_stimuli'
 main_dir = os.path.normpath(os.path.join(script_dir, relative_path))
 
-mediapipe_indir = os.path.join(main_dir, 'FL_BILINGUAL_gestures')
-mediapipe_outdir = os.path.join(main_dir, 'FL_BILINGUAL_gestures_pose')
+mediapipe_indir = os.path.join(main_dir, 'gestures')
+mediapipe_outdir = os.path.join(main_dir, 'gestures_pose')
 
 # select all files that are *.mp4 files in mediapipe_indir
 input_video_path = [f for f in sorted(os.listdir(mediapipe_indir)) if f.endswith('.mp4')]
