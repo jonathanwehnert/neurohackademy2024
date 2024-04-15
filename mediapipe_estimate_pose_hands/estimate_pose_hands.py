@@ -10,7 +10,7 @@ script to obtain pose & hand landmark vectors from video via Google's MediaPipe
     - save npy array of each model over time (i.e. frames)
     - save video with vectors overlaid to mediapipe_outdir
 
-required conda environment: mediapipe_estimate_pose_hands (on MacBook)
+required conda environment: mediapipe (on Linux office workstation)
 current version: 2024-03
 written by: Jonathan Wehnert
 """

@@ -30,8 +30,9 @@ from rsatoolbox.rdm import calc_rdm_movie
 script_path = os.path.abspath(__file__)
 script_dir = os.path.abspath(os.path.dirname(script_path))
 # path relative to this script's location
-relative_path = '../../../1_Organisation/Materials/Stimuli/gestures/FL_BILINGUAL_gestures_pose/'
+relative_path = '../sample_stimuli/gestures_pose'
 input_dir = os.path.normpath(os.path.join(script_dir, relative_path))
+out_dir = script_dir
 fps = 50 # hard-coded fps of videos for timing vector
 
 # load landmark arrays
@@ -147,7 +148,7 @@ channel_names = [f'{item}_{suffix}' for item in channel_names for suffix in ['x'
 
 measurements = landmarks_3d  # for ease of use, rename to 'measurements' to stay in line with rsatoolbox nomenclature
 
-np.save('landmarks_by_word_and_frame.npy', measurements)  # saving a copy of the data going into the RSA Dataset (to
+np.save(os.path.join(out_dir, 'landmarks_by_word_and_frame.npy'), measurements)  # saving a copy of the data going into the RSA Dataset (to
 # use for PCA and anticluster in R later)
 
 ### SETTING UP THE RSA TOOLBOX DATASET ###
@@ -177,52 +178,5 @@ rsatoolbox.vis.show_rdm(landmark_rdm_binned,
                         pattern_descriptor='conds')
 print(landmark_rdm_binned)
 # save landmark RDM to disk; once RDM is finalized, change to overwrite=False
-landmark_rdm_binned.save('landmark_RDM_binned.hdf5', file_type='hdf5', overwrite=True)  # save landmark RDM to disk
-
-
-# # test-section:
-# # compare landmark to fasttext RDM
-ft_dis = np.load('ft_300_cosine_dissimilarities.npy')
-ft_dis = ft_dis[np.newaxis, :, :]  # rsatoolbox.rdm.RDMs requires nparray of dissimilarities in shape (n_rdm x n_cond x n_con)
-ft_rdm = rsatoolbox.rdm.RDMs(ft_dis)
-r_binned = rsatoolbox.rdm.compare(ft_rdm, landmark_rdm_binned, method='rho-a')
-
-# RDM movie: create RDM for each frame (gives error after 120th frame, because of nans then),
-# compare each frame's RDM to fastText RDM, plot cosine distance over time
-r = []
-# WARNING: This fails at t = 2.38, as there are nans in rdm_loc (only few videos have that many frames)
-for t in times:
-    data_loc = data.subset_time('time', t_from=t, t_to=t)
-    data_loc = data_loc.time_as_observations('time')
-    rdm_loc = rsatoolbox.rdm.calc_rdm_unbalanced(data_loc,
-                                                 method='euclidean',
-                                                 descriptor='conds')
-    r.append(rsatoolbox.rdm.compare(ft_rdm, rdm_loc, method='rho-a')[0][0])
-
-plt.figure()
-plt.plot(times[:len(r)], r)
-plt.xlabel('time (s)')
-plt.ylabel('rho-a correlation')
-plt.suptitle('Correlation between RDMs across 40 gesture videos, based on:\n'
-          '1) 300 dimensional fastText vectors,\n'
-          '2) 177 dimensional hand and pose landmarks\n'
-          'at each frame of the videos')
-plt.title(f'mean correlation across frames: rho-a = {round(np.mean(r), 3)}\n'
-          f'correlation when comparing fastText RDM against landmark\n'
-          f'RDM created from all frames binned together: rho-a = {round(r_binned[0][0], 3)}')
-plt.tight_layout()  # ensure the title fits into the figure
-plt.savefig('gesture-landmark_to_fasttext_fit_across_frames.png')
-
-## notes
-# apparently, if for only one of the two conditions being compared for an RDM only one element of its measurements vector is missing
-# there is no distance calculated whatsoever, resulting in an nan in the RDM for that comparison
-# maybe it would be better to get RDM movies separately for the pose model, left hand, and right hand models?
-# that way, each would have fewer nans, and then later they could still be averaged?
-# so at least the information we do have doesn't get lost?
-# example: for a condition at a given frame there is pose data but no hand data. currently that results in comparison = nan
-# then we would get a pose RDM comparison, and only nan in the hand RDMs;
-# after averaging, the pose RDM value would remain - albeit overweighted
-#
-# --> NO! instead, use calc_rdm_unbalanced(), which can deal with nans and will just weight values based on fewer data differently
-# --> unfortunately doesn't exist for calc_rdm_movie(), so can only use on non-temporal RDMs for now
+landmark_rdm_binned.save(os.path.join(out_dir, 'landmark_RDM_binned.hdf5'), file_type='hdf5', overwrite=True)  # save landmark RDM to disk
 
